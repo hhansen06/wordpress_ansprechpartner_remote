@@ -25,7 +25,13 @@ jobs:
 
       - name: Create ZIP with top-level folder
         run: |
-          git archive --format=zip --prefix=h2-remote-ansprechpartner/ -o "h2-remote-ansprechpartner-${{ steps.version.outputs.VERSION }}.zip" HEAD
+          mkdir -p dist/h2-remote-ansprechpartner
+          rsync -a --delete \
+            --exclude ".git" \
+            --exclude ".github" \
+            --exclude "dist" \
+            ./ dist/h2-remote-ansprechpartner/
+          (cd dist && zip -r "../h2-remote-ansprechpartner-${{ steps.version.outputs.VERSION }}.zip" h2-remote-ansprechpartner)
       
       - name: Upload Release Asset
         env:
