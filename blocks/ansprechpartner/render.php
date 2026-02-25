@@ -56,8 +56,11 @@ if (!empty($funktionen)) {
 	$html .= war_render_business_card($person, $startColor, $endColor);
 } else {
 	// All Mode - ohne Funktionsfilter
-    }
-    $html .= '</div>';
+	$html .= '<div class="war-cards-container">';
+	foreach ($ansprechpartner as $person) {
+		$html .= war_render_business_card($person, $startColor, $endColor);
+	}
+	$html .= '</div>';
 }
 
 $html .= '</div>';
