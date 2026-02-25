@@ -18,6 +18,20 @@ if ( empty( $sparte ) ) {
 // Ansprechpartner abrufen
 $ansprechpartner = WordPress_Ansprechpartner_Remote::get_ansprechpartner( $sparte, $funktionen );
 
+// Sortiere Ansprechpartner nach Reihenfolge der ausgewählten Funktionen
+if ( ! empty( $funktionen ) && count( $funktionen ) > 1 ) {
+	usort( $ansprechpartner, function( $a, $b ) use ( $funktionen ) {
+		$pos_a = array_search( $a['funktion'] ?? '', $funktionen );
+		$pos_b = array_search( $b['funktion'] ?? '', $funktionen );
+		
+		// Wenn Position nicht gefunden, ans Ende
+		if ( $pos_a === false ) $pos_a = PHP_INT_MAX;
+		if ( $pos_b === false ) $pos_b = PHP_INT_MAX;
+		
+		return $pos_a - $pos_b;
+	} );
+}
+
 if ( empty( $ansprechpartner ) ) {
 	echo '<div class="war-placeholder"><p>Keine Ansprechpartner gefunden</p></div>';
 	return;

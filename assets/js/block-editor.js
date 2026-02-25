@@ -15,11 +15,7 @@ function EditComponent({ attributes, setAttributes }) {
 	const [funktionen, setFunktionen] = useState([]);
 	const [loading, setLoading] = useState(true);
 
-	const { displayMode, sparte, funktionen: selectedFunktionen, startColor, endColor } = attributes;
-
-	// Standard-Farben aus den Admin-Einstellungen nutzen falls nicht gesetzt
-	const finalStartColor = startColor !== undefined ? startColor : (warBlockData.defaultStartColor || '#667eea');
-	const finalEndColor = endColor !== undefined ? endColor : (warBlockData.defaultEndColor || '#764ba2');
+	const { displayMode, sparte, funktionen: selectedFunktionen, startColor = '#667eea', endColor = '#764ba2' } = attributes;
 
 	// Sparten laden
 	useEffect(() => {
@@ -121,6 +117,17 @@ function EditComponent({ attributes, setAttributes }) {
 		setAttributes({ funktionen: updated });
 	};
 
+	// Handler zum Verschieben von Funktionen
+	const moveFunktion = (index, direction) => {
+		const updated = [...(selectedFunktionen || [])];
+		const newIndex = direction === 'up' ? index - 1 : index + 1;
+		
+		if (newIndex >= 0 && newIndex < updated.length) {
+			[updated[index], updated[newIndex]] = [updated[newIndex], updated[index]];
+			setAttributes({ funktionen: updated });
+		}
+	};
+
 	return wp.element.createElement(
 		Fragment,
 		null,
@@ -173,6 +180,75 @@ function EditComponent({ attributes, setAttributes }) {
 								onChange: (isChecked) => handleFunktionChange(funktion.value, isChecked)
 							}
 						)
+					),
+					(selectedFunktionen || []).length > 1 && wp.element.createElement(
+						Fragment,
+						null,
+						wp.element.createElement(
+							'hr',
+							{ style: { margin: '15px 0', borderColor: '#ddd' } }
+						),
+						wp.element.createElement(
+							'p',
+							{ style: { marginBottom: '10px', fontWeight: 'bold' } },
+							'Reihenfolge der Funktionen'
+						),
+						(selectedFunktionen || []).map((funktion, index) =>
+							wp.element.createElement(
+								'div',
+								{ 
+									key: funktion,
+									style: { 
+										display: 'flex',
+										alignItems: 'center',
+										gap: '8px',
+										padding: '8px',
+										backgroundColor: '#f9f9f9',
+										borderRadius: '3px',
+										marginBottom: '6px'
+									}
+								},
+								wp.element.createElement(
+									'span',
+									{ style: { flex: 1, fontSize: '13px' } },
+									funktion
+								),
+								wp.element.createElement(
+									'button',
+									{
+										onClick: () => moveFunktion(index, 'up'),
+										disabled: index === 0,
+										style: {
+											padding: '4px 8px',
+											fontSize: '12px',
+											cursor: index === 0 ? 'default' : 'pointer',
+											opacity: index === 0 ? 0.5 : 1,
+											border: '1px solid #999',
+											backgroundColor: '#fff',
+											borderRadius: '3px'
+										}
+									},
+									'↑'
+								),
+								wp.element.createElement(
+									'button',
+									{
+										onClick: () => moveFunktion(index, 'down'),
+										disabled: index === (selectedFunktionen || []).length - 1,
+										style: {
+											padding: '4px 8px',
+											fontSize: '12px',
+											cursor: index === (selectedFunktionen || []).length - 1 ? 'default' : 'pointer',
+											opacity: index === (selectedFunktionen || []).length - 1 ? 0.5 : 1,
+											border: '1px solid #999',
+											backgroundColor: '#fff',
+											borderRadius: '3px'
+										}
+									},
+									'↓'
+								)
+							)
+						)
 					)
 				),
 				wp.element.createElement(
@@ -195,7 +271,7 @@ function EditComponent({ attributes, setAttributes }) {
 					wp.element.createElement(
 						ColorPalette,
 						{
-							value: finalStartColor,
+							value: startColor,
 							onChange: (color) => setAttributes({ startColor: color }),
 							allowCustom: true
 						}
@@ -212,7 +288,7 @@ function EditComponent({ attributes, setAttributes }) {
 					wp.element.createElement(
 						ColorPalette,
 						{
-							value: finalEndColor,
+							value: endColor,
 							onChange: (color) => setAttributes({ endColor: color }),
 							allowCustom: true
 						}
@@ -262,7 +338,7 @@ function EditComponent({ attributes, setAttributes }) {
 						wp.element.createElement(
 							'div',
 							{ style: { 
-								background: 'linear-gradient(135deg, ' + finalStartColor + ' 0%, ' + finalEndColor + ' 100%)',
+								background: 'linear-gradient(135deg, ' + startColor + ' 0%, ' + endColor + ' 100%)',
 								height: '40px',
 								borderRadius: '4px',
 								marginTop: '8px'

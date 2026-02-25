@@ -163,17 +163,11 @@ class WordPress_Ansprechpartner_Remote {
 			$version
 		);
 
-		// Standard-Farben abrufen
-		$default_start_color = get_option( 'war_default_start_color', '#667eea' );
-		$default_end_color = get_option( 'war_default_end_color', '#764ba2' );
-
-		// Localize data mit AJAX, REST URLs und Standard-Farben
+		// Localize data mit AJAX und REST URLs
 		wp_localize_script( 'war-block-editor', 'warBlockData', array(
-			'ajaxUrl'              => admin_url( 'admin-ajax.php' ),
-			'restUrl'              => rest_url( 'war/v1' ),
-			'apiBase'              => rest_url( 'vereinsverwaltung/v1' ),
-			'defaultStartColor'    => $default_start_color,
-			'defaultEndColor'      => $default_end_color,
+			'ajaxUrl'  => admin_url( 'admin-ajax.php' ),
+			'restUrl'  => rest_url( 'war/v1' ),
+			'apiBase'  => rest_url( 'vereinsverwaltung/v1' ),
 		) );
 	}
 
@@ -224,8 +218,6 @@ class WordPress_Ansprechpartner_Remote {
 		// Cache-Größe berechnen
 		$cache_size = $this->get_cache_size();
 		$api_base = self::get_api_base();
-		$default_start_color = get_option( 'war_default_start_color', '#667eea' );
-		$default_end_color = get_option( 'war_default_end_color', '#764ba2' );
 		?>
 		<div class="wrap">
 			<h1>Ansprechpartner Remote - Einstellungen</h1>
@@ -251,28 +243,6 @@ class WordPress_Ansprechpartner_Remote {
 									value="<?php echo esc_attr( $api_base ); ?>" 
 									class="regular-text code" required>
 								<p class="description">Standard: <code><?php echo esc_html( self::DEFAULT_API_BASE ); ?></code></p>
-							</td>
-						</tr>
-						<tr>
-							<th scope="row">
-								<label for="war_default_start_color">Standard Gradient Start-Farbe</label>
-							</th>
-							<td>
-								<input type="color" id="war_default_start_color" name="war_default_start_color" 
-									value="<?php echo esc_attr( $default_start_color ); ?>" 
-									style="width: 80px; height: 40px; cursor: pointer;">
-								<p class="description">Diese Farbe wird für alle neuen Blöcke als Standard-Startfarbe verwendet.</p>
-							</td>
-						</tr>
-						<tr>
-							<th scope="row">
-								<label for="war_default_end_color">Standard Gradient End-Farbe</label>
-							</th>
-							<td>
-								<input type="color" id="war_default_end_color" name="war_default_end_color" 
-									value="<?php echo esc_attr( $default_end_color ); ?>" 
-									style="width: 80px; height: 40px; cursor: pointer;">
-								<p class="description">Diese Farbe wird für alle neuen Blöcke als Standard-Endfarbe verwendet.</p>
 							</td>
 						</tr>
 					</table>
@@ -334,20 +304,6 @@ class WordPress_Ansprechpartner_Remote {
 			$api_url = sanitize_url( $_POST['war_api_base_url'] );
 			update_option( self::API_URL_OPTION, $api_url );
 			$this->clear_all_cache(); // Cache leeren wenn API URL geändert wird
-		}
-
-		if ( isset( $_POST['war_default_start_color'] ) ) {
-			$start_color = sanitize_hex_color( $_POST['war_default_start_color'] );
-			if ( $start_color ) {
-				update_option( 'war_default_start_color', $start_color );
-			}
-		}
-
-		if ( isset( $_POST['war_default_end_color'] ) ) {
-			$end_color = sanitize_hex_color( $_POST['war_default_end_color'] );
-			if ( $end_color ) {
-				update_option( 'war_default_end_color', $end_color );
-			}
 		}
 
 		wp_redirect( admin_url( 'options-general.php?page=war-settings&settings_saved=1' ) );
