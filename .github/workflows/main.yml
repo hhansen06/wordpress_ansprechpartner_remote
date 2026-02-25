@@ -18,7 +18,12 @@ jobs:
       - name: Get release version
         id: version
         run: echo "VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
-      
+
+      - name: Set plugin version
+        run: |
+          echo "VERSION=${{ github.ref_name }}"
+          sed -i "s/@VERSION@/${VERSION}/g" wordpress_ansprechpartner_remote.php
+
       - name: Create ZIP with top-level folder
         run: |
           git archive --format=zip --prefix=h2-remote-ansprechpartner/ -o "h2-remote-ansprechpartner-${{ steps.version.outputs.VERSION }}.zip" HEAD
