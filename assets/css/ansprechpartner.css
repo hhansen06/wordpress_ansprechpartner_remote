@@ -143,6 +143,89 @@
     color: #005a87;
 }
 
+/* Horizontales Card Layout */
+.war-cards-horizontal {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin: 1.5rem 0;
+}
+
+.war-card-horizontal {
+    display: flex;
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    transition: box-shadow 0.3s ease;
+    width: 100%;
+}
+
+.war-card-horizontal:hover {
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+.war-card-horizontal-left {
+    width: 250px;
+    min-width: 250px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+    flex-shrink: 0;
+}
+
+.war-card-avatar-horizontal {
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 4px solid #fff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    flex-shrink: 0;
+}
+
+.war-card-avatar-horizontal.war-card-avatar-fallback {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.war-card-horizontal-right {
+    flex: 1;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.war-card-horizontal-right .war-card-name {
+    margin: 0 0 0.5rem 0;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #333;
+}
+
+.war-card-horizontal-right .war-card-function {
+    margin: 0 0 0.75rem 0;
+    font-size: 0.95rem;
+    color: #666;
+    font-weight: 500;
+}
+
+.war-card-contact-horizontal {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    font-size: 0.9rem;
+}
+
+.war-card-contact-horizontal .war-contact-item {
+    margin-bottom: 0;
+    white-space: nowrap;
+}
+
 /* Card Sparte */
 .war-card-sparte {
     margin: 0;
@@ -185,6 +268,31 @@
 
     .war-card-image {
         height: 200px;
+    }
+
+    .war-card-horizontal {
+        flex-direction: column;
+    }
+
+    .war-card-horizontal-left {
+        width: 100%;
+        min-width: auto;
+        height: 200px;
+        padding: 1.5rem;
+    }
+
+    .war-card-avatar-horizontal {
+        width: 120px;
+        height: 120px;
+    }
+
+    .war-card-contact-horizontal {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .war-card-contact-horizontal .war-contact-item {
+        white-space: normal;
     }
 }
 

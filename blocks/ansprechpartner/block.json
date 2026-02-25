@@ -35,6 +35,15 @@
         "endColor": {
             "type": "string",
             "default": "#764ba2"
+        },
+        "cardLayout": {
+            "type": "string",
+            "enum": ["grid", "horizontal"],
+            "default": "grid"
+        },
+        "overrideEmail": {
+            "type": "string",
+            "default": ""
         }
     }
 }

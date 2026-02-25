@@ -8,6 +8,8 @@ $sparte = isset($attributes['sparte']) ? sanitize_text_field($attributes['sparte
 $funktionen = isset($attributes['funktionen']) && is_array($attributes['funktionen']) ? array_map('sanitize_text_field', $attributes['funktionen']) : array();
 $startColor = isset($attributes['startColor']) ? sanitize_text_field($attributes['startColor']) : '#667eea';
 $endColor = isset($attributes['endColor']) ? sanitize_text_field($attributes['endColor']) : '#764ba2';
+$cardLayout = isset($attributes['cardLayout']) ? sanitize_key($attributes['cardLayout']) : 'grid';
+$overrideEmail = isset($attributes['overrideEmail']) ? sanitize_email($attributes['overrideEmail']) : '';
 
 // Wenn keine Sparte ausgewählt, zeige Hinweis
 if (empty($sparte)) {
@@ -108,27 +110,43 @@ if (empty($ansprechpartner)) {
 }
 
 // HTML rendern
-$html = '<div class="wp-block-war-ansprechpartner war-display-' . esc_attr($display_mode) . '">';
+$html = '<div class="wp-block-war-ansprechpartner war-display-' . esc_attr($display_mode) . ' war-layout-' . esc_attr($cardLayout) . '">';
 
 // Wenn Funktionen gefiltert sind (egal wie viele), zeige alle gefilterten Karten
 if (!empty($funktionen)) {
 	// Funktionen gefiltert - zeige alle Ergebnisse
-	$html .= '<div class="war-cards-container">';
-	foreach ($ansprechpartner as $person) {
-		$html .= war_render_business_card($person, $startColor, $endColor);
+	if ('horizontal' === $cardLayout) {
+		$html .= '<div class="war-cards-horizontal">';
+		foreach ($ansprechpartner as $person) {
+			$html .= war_render_business_card($person, $startColor, $endColor, $cardLayout, $overrideEmail);
+		}
+		$html .= '</div>';
+	} else {
+		$html .= '<div class="war-cards-container">';
+		foreach ($ansprechpartner as $person) {
+			$html .= war_render_business_card($person, $startColor, $endColor, $cardLayout, $overrideEmail);
+		}
+		$html .= '</div>';
 	}
-	$html .= '</div>';
 } else if ('single' === $display_mode || ('all' === $display_mode && count($ansprechpartner) === 1)) {
 	// Single Card Mode - ohne Funktionsfilter
 	$person = reset($ansprechpartner);
-	$html .= war_render_business_card($person, $startColor, $endColor);
+	$html .= war_render_business_card($person, $startColor, $endColor, $cardLayout, $overrideEmail);
 } else {
 	// All Mode - ohne Funktionsfilter
-	$html .= '<div class="war-cards-container">';
-	foreach ($ansprechpartner as $person) {
-		$html .= war_render_business_card($person, $startColor, $endColor);
+	if ('horizontal' === $cardLayout) {
+		$html .= '<div class="war-cards-horizontal">';
+		foreach ($ansprechpartner as $person) {
+			$html .= war_render_business_card($person, $startColor, $endColor, $cardLayout, $overrideEmail);
+		}
+		$html .= '</div>';
+	} else {
+		$html .= '<div class="war-cards-container">';
+		foreach ($ansprechpartner as $person) {
+			$html .= war_render_business_card($person, $startColor, $endColor, $cardLayout, $overrideEmail);
+		}
+		$html .= '</div>';
 	}
-	$html .= '</div>';
 }
 
 $html .= '</div>';

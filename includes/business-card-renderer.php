@@ -11,10 +11,17 @@ if (!function_exists('war_render_business_card')) {
      * @param array $person Ansprechpartner-Daten
      * @param string $startColor Gradient Start-Farbe
      * @param string $endColor Gradient End-Farbe
+     * @param string $cardLayout Layout-Typ: 'grid' oder 'horizontal'
+     * @param string $overrideEmail Optionale Email-Überschreibung
      * @return string HTML
      */
-    function war_render_business_card($person, $startColor = '#667eea', $endColor = '#764ba2')
+    function war_render_business_card($person, $startColor = '#667eea', $endColor = '#764ba2', $cardLayout = 'grid', $overrideEmail = '')
     {
+        // Für horizontales Layout ein anderes Template
+        if ('horizontal' === $cardLayout) {
+            return war_render_business_card_horizontal($person, $startColor, $endColor, $overrideEmail);
+        }
+
         $html = '<div class="war-card">';
 
         // Avatar/Foto Header mit Gradient-Farben
@@ -81,11 +88,122 @@ if (!function_exists('war_render_business_card')) {
         // Kontaktinfos
         $html .= '<div class="war-card-contact">';
 
-        // Email
-        if (!empty($person['email'])) {
+        // Email (mit Override-Unterstützung)
+        $displayEmail = !empty($overrideEmail) ? $overrideEmail : ($person['email'] ?? '');
+        if (!empty($displayEmail)) {
             $html .= '<div class="war-contact-item">';
             $html .= '<span class="war-contact-icon">📧</span> ';
-            $html .= '<a href="mailto:' . esc_attr($person['email']) . '">' . esc_html($person['email']) . '</a>';
+            $html .= '<a href="mailto:' . esc_attr($displayEmail) . '">' . esc_html($displayEmail) . '</a>';
+            $html .= '</div>';
+        }
+
+        // Telefon (verschiedene Feldnamen)
+        $phone = $person['telefon'] ?? $person['phone'] ?? '';
+        if (!empty($phone)) {
+            $html .= '<div class="war-contact-item">';
+            $html .= '<span class="war-contact-icon">☎️</span> ';
+            $html .= '<a href="tel:' . esc_attr(preg_replace('/[^0-9+]/', '', $phone)) . '">' . esc_html($phone) . '</a>';
+            $html .= '</div>';
+        }
+
+        // Mobil
+        $mobil = $person['mobil'] ?? $person['mobile'] ?? '';
+        if (!empty($mobil)) {
+            $html .= '<div class="war-contact-item">';
+            $html .= '<span class="war-contact-icon">📱</span> ';
+            $html .= '<a href="tel:' . esc_attr(preg_replace('/[^0-9+]/', '', $mobil)) . '">' . esc_html($mobil) . '</a>';
+            $html .= '</div>';
+        }
+
+        $html .= '</div>';
+
+        $html .= '</div>';
+        $html .= '</div>';
+
+        return $html;
+    }
+}
+
+if (!function_exists('war_render_business_card_horizontal')) {
+    /**
+     * Horizontale Visitenkarte rendern (schmale Variante)
+     *
+     * @param array $person Ansprechpartner-Daten
+     * @param string $startColor Gradient Start-Farbe
+     * @param string $endColor Gradient End-Farbe
+     * @param string $overrideEmail Optionale Email-Überschreibung
+     * @return string HTML
+     */
+    function war_render_business_card_horizontal($person, $startColor = '#667eea', $endColor = '#764ba2', $overrideEmail = '')
+    {
+        $html = '<div class="war-card-horizontal">';
+
+        // Avatar/Foto Header mit Gradient-Farben (links)
+        $gradient_style = 'style="background: linear-gradient(135deg, ' . esc_attr($startColor) . ' 0%, ' . esc_attr($endColor) . ' 100%);"';
+        $html .= '<div class="war-card-horizontal-left" ' . $gradient_style . '>';
+
+        // Avatar - Foto oder Fallback
+        $have_foto = false;
+        $foto_url = '';
+
+        if (!empty($person['avatar_url'])) {
+            $foto_url = $person['avatar_url'];
+            $have_foto = true;
+        } elseif (!empty($person['foto'])) {
+            if (is_array($person['foto']) && !empty($person['foto']['url'])) {
+                $foto_url = $person['foto']['url'];
+                $have_foto = true;
+            } elseif (is_string($person['foto']) && !empty($person['foto'])) {
+                $foto_url = $person['foto'];
+                $have_foto = true;
+            }
+        }
+
+        if ($have_foto && !empty($foto_url)) {
+            $html .= '<div class="war-card-avatar-horizontal">';
+            $html .= '<img src="' . esc_url($foto_url) . '" alt="' . esc_attr($person['name'] ?? 'Avatar') . '" class="war-avatar-image" onerror="this.style.display=\'none\'">';
+            $html .= '</div>';
+        }
+
+        // Fallback: Initiale wenn kein Foto
+        if (!$have_foto && !empty($person['name'])) {
+            $initiale = strtoupper(substr($person['name'], 0, 1));
+            $html .= '<div class="war-card-avatar-horizontal war-card-avatar-fallback">';
+            $html .= '<span class="war-avatar-initiale">' . esc_html($initiale) . '</span>';
+            $html .= '</div>';
+        }
+
+        $html .= '</div>';
+
+        // Rechte Seite mit Content
+        $html .= '<div class="war-card-horizontal-right">';
+
+        // Name
+        if (!empty($person['name'])) {
+            $html .= '<h3 class="war-card-name">' . esc_html($person['name']) . '</h3>';
+        }
+
+        // Funktion(en)
+        $funktionen = array();
+        if (isset($person['funktionen']) && is_array($person['funktionen'])) {
+            $funktionen = $person['funktionen'];
+        } elseif (!empty($person['funktion'])) {
+            $funktionen = array($person['funktion']);
+        }
+
+        if (!empty($funktionen)) {
+            $html .= '<p class="war-card-function">' . esc_html(implode(' / ', $funktionen)) . '</p>';
+        }
+
+        // Kontaktinfos
+        $html .= '<div class="war-card-contact-horizontal">';
+
+        // Email (mit Override-Unterstützung)
+        $displayEmail = !empty($overrideEmail) ? $overrideEmail : ($person['email'] ?? '');
+        if (!empty($displayEmail)) {
+            $html .= '<div class="war-contact-item">';
+            $html .= '<span class="war-contact-icon">📧</span> ';
+            $html .= '<a href="mailto:' . esc_attr($displayEmail) . '">' . esc_html($displayEmail) . '</a>';
             $html .= '</div>';
         }
 

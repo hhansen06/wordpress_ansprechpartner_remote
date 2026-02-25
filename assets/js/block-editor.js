@@ -1,6 +1,6 @@
 const { registerBlockType } = wp.blocks;
 const { useBlockProps, InspectorControls } = wp.blockEditor;
-const { PanelBody, SelectControl, RadioControl, CheckboxControl, ColorPalette } = wp.components;
+const { PanelBody, SelectControl, RadioControl, CheckboxControl, ColorPalette, TextControl } = wp.components;
 const { useEffect, useState } = wp.element;
 const { Fragment } = wp.element;
 const apiFetch = wp.apiFetch;
@@ -15,7 +15,7 @@ function EditComponent({ attributes, setAttributes }) {
     const [funktionen, setFunktionen] = useState([]);
     const [loading, setLoading] = useState(true);
 
-    const { displayMode, sparte, funktionen: selectedFunktionen, startColor = '#667eea', endColor = '#764ba2' } = attributes;
+    const { displayMode, sparte, funktionen: selectedFunktionen, startColor = '#667eea', endColor = '#764ba2', cardLayout = 'grid', overrideEmail = '' } = attributes;
 
     // Sparten laden
     useEffect(() => {
@@ -293,6 +293,46 @@ function EditComponent({ attributes, setAttributes }) {
                             allowCustom: true
                         }
                     )
+                ),
+                wp.element.createElement(
+                    'hr',
+                    { style: { margin: '15px 0' } }
+                ),
+                wp.element.createElement(
+                    'p',
+                    { style: { marginBottom: '10px', fontWeight: 'bold' } },
+                    'Layout'
+                ),
+                wp.element.createElement(
+                    RadioControl,
+                    {
+                        label: 'Card Layout',
+                        selected: cardLayout || 'grid',
+                        options: [
+                            { label: 'Grid (Standard)', value: 'grid' },
+                            { label: 'Horizontal (Schmale Variante)', value: 'horizontal' }
+                        ],
+                        onChange: (value) => setAttributes({ cardLayout: value })
+                    }
+                ),
+                wp.element.createElement(
+                    'hr',
+                    { style: { margin: '15px 0' } }
+                ),
+                wp.element.createElement(
+                    'p',
+                    { style: { marginBottom: '10px', fontWeight: 'bold' } },
+                    'Email Einstellungen'
+                ),
+                wp.element.createElement(
+                    TextControl,
+                    {
+                        label: 'Email überschreiben (optional)',
+                        value: overrideEmail,
+                        onChange: (value) => setAttributes({ overrideEmail: value }),
+                        placeholder: 'z.B. kontakt@example.com',
+                        help: 'Wenn gesetzt, wird diese Email für alle Personen verwendet'
+                    }
                 )
             )
         ),
