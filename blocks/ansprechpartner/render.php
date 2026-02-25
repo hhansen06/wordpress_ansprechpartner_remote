@@ -34,6 +34,74 @@ if (!empty($funktionen) && count($funktionen) > 1) {
     });
 }
 
+// Doppelte Personen zusammenfassen und Funktionen sammeln
+$merged = array();
+foreach ($ansprechpartner as $person) {
+	$key = '';
+	if (!empty($person['email'])) {
+		$key = 'email:' . strtolower($person['email']);
+	} else {
+		$phone_key = $person['telefon'] ?? $person['phone'] ?? '';
+		if (!empty($phone_key)) {
+			$key = 'phone:' . preg_replace('/[^0-9+]/', '', $phone_key);
+		} elseif (!empty($person['name'])) {
+			$key = 'name:' . strtolower($person['name']);
+		} else {
+			$key = 'row:' . md5(wp_json_encode($person));
+		}
+	}
+
+	if (!isset($merged[$key])) {
+		$merged[$key] = $person;
+		$merged[$key]['funktionen'] = array();
+	}
+
+	$incoming_funktionen = array();
+	if (!empty($person['funktion'])) {
+		$incoming_funktionen[] = $person['funktion'];
+	}
+	if (isset($person['funktionen']) && is_array($person['funktionen'])) {
+		$incoming_funktionen = array_merge($incoming_funktionen, $person['funktionen']);
+	}
+
+	foreach ($incoming_funktionen as $funktion) {
+		if (!in_array($funktion, $merged[$key]['funktionen'], true)) {
+			$merged[$key]['funktionen'][] = $funktion;
+		}
+	}
+}
+
+$ansprechpartner = array_values($merged);
+
+// Funktionen je Person nach Auswahl-Reihenfolge sortieren
+if (!empty($funktionen)) {
+	foreach ($ansprechpartner as &$person) {
+		if (!empty($person['funktionen']) && is_array($person['funktionen'])) {
+			$ordered = array_values(array_intersect($funktionen, $person['funktionen']));
+			$remaining = array_values(array_diff($person['funktionen'], $ordered));
+			$person['funktionen'] = array_merge($ordered, $remaining);
+		}
+	}
+	unset($person);
+
+	usort($ansprechpartner, function ($a, $b) use ($funktionen) {
+		$func_a = is_array($a['funktionen'] ?? null) ? ($a['funktionen'][0] ?? '') : ($a['funktion'] ?? '');
+		$func_b = is_array($b['funktionen'] ?? null) ? ($b['funktionen'][0] ?? '') : ($b['funktion'] ?? '');
+
+		$pos_a = array_search($func_a, $funktionen);
+		$pos_b = array_search($func_b, $funktionen);
+
+		if ($pos_a === false) {
+			$pos_a = PHP_INT_MAX;
+		}
+		if ($pos_b === false) {
+			$pos_b = PHP_INT_MAX;
+		}
+
+		return $pos_a - $pos_b;
+	});
+}
+
 if (empty($ansprechpartner)) {
     echo '<div class="war-placeholder"><p>Keine Ansprechpartner gefunden</p></div>';
     return;

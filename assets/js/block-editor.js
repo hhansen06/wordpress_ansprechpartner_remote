@@ -51,7 +51,7 @@ function EditComponent({ attributes, setAttributes }) {
         loadSparten();
     }, []);
 
-    // Funktionen laden wenn Sparte geändert wird
+    // Funktionen laden wenn Sparte gesetzt/geändert wird
     useEffect(() => {
         if (!sparte) {
             setFunktionen([]);
@@ -107,7 +107,7 @@ function EditComponent({ attributes, setAttributes }) {
         };
 
         loadFunktionen();
-    }, [sparte, setAttributes, selectedFunktionen]);
+    }, [sparte]);
 
     // Handler für Funktionen Veränderung
     const handleFunktionChange = (funktionValue, isChecked) => {

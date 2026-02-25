@@ -7,13 +7,14 @@
 /* Single Card Styling - nur wenn keine Container mit mehreren Karten */
 .wp-block-war-ansprechpartner.war-display-single:not(:has(.war-cards-container)) {
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
 }
 
 /* Cards Container - erzwingt Grid-Layout */
 .war-cards-container {
     display: grid !important;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    justify-items: start;
     gap: 2rem;
     margin: 1.5rem 0;
 }
@@ -27,7 +28,7 @@
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
     transition: box-shadow 0.3s ease, transform 0.3s ease;
     max-width: 400px;
-    margin: 0 auto;
+    margin: 0;
     width: 100%;
 }
 

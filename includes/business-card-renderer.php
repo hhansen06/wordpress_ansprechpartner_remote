@@ -66,9 +66,16 @@ if (!function_exists('war_render_business_card')) {
             $html .= '<h3 class="war-card-name">' . esc_html($person['name']) . '</h3>';
         }
 
-        // Funktion
-        if (!empty($person['funktion'])) {
-            $html .= '<p class="war-card-function">' . esc_html($person['funktion']) . '</p>';
+        // Funktion(en)
+        $funktionen = array();
+        if (isset($person['funktionen']) && is_array($person['funktionen'])) {
+            $funktionen = $person['funktionen'];
+        } elseif (!empty($person['funktion'])) {
+            $funktionen = array($person['funktion']);
+        }
+
+        if (!empty($funktionen)) {
+            $html .= '<p class="war-card-function">' . esc_html(implode(' / ', $funktionen)) . '</p>';
         }
 
         // Kontaktinfos
