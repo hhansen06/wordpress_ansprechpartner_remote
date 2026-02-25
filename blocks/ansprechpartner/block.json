@@ -1,0 +1,29 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "war/ansprechpartner",
+  "title": "Ansprechpartner",
+  "category": "widgets",
+  "description": "Zeigt Ansprechpartner von einer Remote-API in Visitenkarten an",
+  "supports": {
+    "html": false,
+    "align": true
+  },
+  "textdomain": "wordpress-ansprechpartner-remote",
+  "render": "file:./render.php",
+  "attributes": {
+    "displayMode": {
+      "type": "string",
+      "enum": ["single", "all"],
+      "default": "single"
+    },
+    "sparte": {
+      "type": "string",
+      "default": ""
+    },
+    "funktion": {
+      "type": "string",
+      "default": ""
+    }
+  }
+}
