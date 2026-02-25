@@ -1,197 +1,197 @@
 /* Ansprechpartner Block Styles */
 
 .wp-block-war-ansprechpartner {
-	margin: 2rem 0;
+    margin: 2rem 0;
 }
 
 /* Single Card Styling - nur wenn keine Container mit mehreren Karten */
 .wp-block-war-ansprechpartner.war-display-single:not(:has(.war-cards-container)) {
-	display: flex;
-	justify-content: center;
+    display: flex;
+    justify-content: center;
 }
 
 /* Cards Container - erzwingt Grid-Layout */
 .war-cards-container {
-	display: grid !important;
-	grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-	gap: 2rem;
-	margin: 1.5rem 0;
+    display: grid !important;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+    margin: 1.5rem 0;
 }
 
 /* Card Wrapper */
 .war-card {
-	background: #fff;
-	border: 1px solid #e0e0e0;
-	border-radius: 8px;
-	overflow: hidden;
-	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-	transition: box-shadow 0.3s ease, transform 0.3s ease;
-	max-width: 400px;
-	margin: 0 auto;
-	width: 100%;
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+    max-width: 400px;
+    margin: 0 auto;
+    width: 100%;
 }
 
 .war-card:hover {
-	box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
-	transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
 }
 
 /* Card Header mit Avatar */
 .war-card-header {
-	background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-	padding: 1.5rem;
-	text-align: center;
-	min-height: 150px;
-	display: flex;
-	align-items: center;
-	justify-content: center;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 1.5rem;
+    text-align: center;
+    min-height: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 /* Avatar Container */
 .war-card-avatar {
-	width: 120px;
-	height: 120px;
-	border-radius: 50%;
-	overflow: hidden;
-	border: 4px solid #fff;
-	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-	flex-shrink: 0;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 4px solid #fff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    flex-shrink: 0;
 }
 
 /* Avatar Fallback (Initialen) */
 .war-card-avatar.war-card-avatar-fallback {
-	background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-	display: flex;
-	align-items: center;
-	justify-content: center;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 /* Initiale Text */
 .war-avatar-initiale {
-	font-size: 3.5rem;
-	font-weight: bold;
-	color: #fff;
-	text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    font-size: 3.5rem;
+    font-weight: bold;
+    color: #fff;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 /* Avatar Image */
 .war-avatar-image {
-	width: 100%;
-	height: 100%;
-	object-fit: cover;
-	display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
 }
 
 /* Card Content */
 .war-card-content {
-	padding: 1.5rem;
+    padding: 1.5rem;
 }
 
 /* Card Name */
 .war-card-name {
-	margin: 0 0 0.5rem 0;
-	font-size: 1.25rem;
-	font-weight: 600;
-	color: #333;
-	line-height: 1.3;
+    margin: 0 0 0.5rem 0;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #333;
+    line-height: 1.3;
 }
 
 /* Card Function */
 .war-card-function {
-	margin: 0 0 1rem 0;
-	font-size: 0.95rem;
-	color: #666;
-	font-weight: 500;
+    margin: 0 0 1rem 0;
+    font-size: 0.95rem;
+    color: #666;
+    font-weight: 500;
 }
 
 /* Contact Info Section */
 .war-card-contact {
-	border-top: 1px solid #f0f0f0;
-	padding-top: 1rem;
-	margin-bottom: 1rem;
+    border-top: 1px solid #f0f0f0;
+    padding-top: 1rem;
+    margin-bottom: 1rem;
 }
 
 /* Contact Items */
 .war-contact-item {
-	margin-bottom: 0.75rem;
-	font-size: 0.9rem;
-	color: #555;
-	display: flex;
-	flex-wrap: wrap;
-	gap: 0.5rem;
+    margin-bottom: 0.75rem;
+    font-size: 0.9rem;
+    color: #555;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
 }
 
 .war-contact-item:last-child {
-	margin-bottom: 0;
+    margin-bottom: 0;
 }
 
 .war-label {
-	font-weight: 600;
-	color: #333;
-	min-width: 50px;
+    font-weight: 600;
+    color: #333;
+    min-width: 50px;
 }
 
 .war-contact-item a {
-	color: #0073aa;
-	text-decoration: none;
-	word-break: break-word;
+    color: #0073aa;
+    text-decoration: none;
+    word-break: break-word;
 }
 
 .war-contact-item a:hover {
-	text-decoration: underline;
-	color: #005a87;
+    text-decoration: underline;
+    color: #005a87;
 }
 
 /* Card Sparte */
 .war-card-sparte {
-	margin: 0;
-	padding-top: 1rem;
-	border-top: 1px solid #f0f0f0;
-	font-size: 0.85rem;
-	color: #999;
-	text-transform: uppercase;
-	letter-spacing: 0.5px;
+    margin: 0;
+    padding-top: 1rem;
+    border-top: 1px solid #f0f0f0;
+    font-size: 0.85rem;
+    color: #999;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
 /* Placeholder */
 .war-placeholder {
-	padding: 2rem;
-	text-align: center;
-	background: #f9f9f9;
-	border: 1px dashed #ddd;
-	border-radius: 4px;
-	color: #999;
+    padding: 2rem;
+    text-align: center;
+    background: #f9f9f9;
+    border: 1px dashed #ddd;
+    border-radius: 4px;
+    color: #999;
 }
 
 .war-placeholder p {
-	margin: 0;
+    margin: 0;
 }
 
 /* Responsive */
 @media (max-width: 768px) {
-	.war-cards-container {
-		grid-template-columns: 1fr;
-		gap: 1.5rem;
-	}
+    .war-cards-container {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
 
-	.war-card {
-		max-width: 100%;
-	}
+    .war-card {
+        max-width: 100%;
+    }
 
-	.war-card-content {
-		padding: 1.25rem;
-	}
+    .war-card-content {
+        padding: 1.25rem;
+    }
 
-	.war-card-image {
-		height: 200px;
-	}
+    .war-card-image {
+        height: 200px;
+    }
 }
 
 /* Print Styles */
 @media print {
-	.war-card {
-		page-break-inside: avoid;
-		box-shadow: none;
-		border-color: #ccc;
-	}
+    .war-card {
+        page-break-inside: avoid;
+        box-shadow: none;
+        border-color: #ccc;
+    }
 }

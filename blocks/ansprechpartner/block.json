@@ -1,37 +1,40 @@
 {
-  "$schema": "https://schemas.wp.org/trunk/block.json",
-  "apiVersion": 3,
-  "name": "war/ansprechpartner",
-  "title": "Ansprechpartner",
-  "category": "widgets",
-  "description": "Zeigt Ansprechpartner von einer Remote-API in Visitenkarten an",
-  "supports": {
-    "html": false,
-    "align": true
-  },
-  "textdomain": "wordpress-ansprechpartner-remote",
-  "render": "file:./render.php",
-  "attributes": {
-    "displayMode": {
-      "type": "string",
-      "enum": ["single", "all"],
-      "default": "single"
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "name": "war/ansprechpartner",
+    "title": "Ansprechpartner",
+    "category": "widgets",
+    "description": "Zeigt Ansprechpartner von einer Remote-API in Visitenkarten an",
+    "supports": {
+        "html": false,
+        "align": true
     },
-    "sparte": {
-      "type": "string",
-      "default": ""
-    },
-    "funktionen": {
-      "type": "array",
-      "default": []
-    },
-    "startColor": {
-      "type": "string",
-      "default": "#667eea"
-    },
-    "endColor": {
-      "type": "string",
-      "default": "#764ba2"
+    "textdomain": "wordpress-ansprechpartner-remote",
+    "render": "file:./render.php",
+    "attributes": {
+        "displayMode": {
+            "type": "string",
+            "enum": [
+                "single",
+                "all"
+            ],
+            "default": "single"
+        },
+        "sparte": {
+            "type": "string",
+            "default": ""
+        },
+        "funktionen": {
+            "type": "array",
+            "default": []
+        },
+        "startColor": {
+            "type": "string",
+            "default": "#667eea"
+        },
+        "endColor": {
+            "type": "string",
+            "default": "#764ba2"
+        }
     }
-  }
 }

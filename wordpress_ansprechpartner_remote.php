@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Ansprechpartner Remote
  * Description: Zeigt Ansprechpartner von einer Remote-API in Visitenkarten an
- * Version: 1.0.1
+ * Version: 1.0.3
  * Author: Henrik Hansen
  * License: GPL2
  * Text Domain: ansprechpartner-remote
