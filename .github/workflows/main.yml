@@ -21,8 +21,7 @@ jobs:
 
       - name: Set plugin version
         run: |
-          echo "VERSION=${{ github.ref_name }}"
-          sed -i "s/@VERSION@/${VERSION}/g" wordpress_ansprechpartner_remote.php
+          sed -i "s/@VERSION@/${{ steps.version.outputs.VERSION }}/g" wordpress_ansprechpartner_remote.php
 
       - name: Create ZIP with top-level folder
         run: |
