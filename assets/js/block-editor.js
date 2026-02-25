@@ -1,6 +1,6 @@
 const { registerBlockType } = wp.blocks;
 const { useBlockProps, InspectorControls } = wp.blockEditor;
-const { PanelBody, SelectControl, RadioControl } = wp.components;
+const { PanelBody, SelectControl, RadioControl, CheckboxControl, ColorPalette } = wp.components;
 const { useEffect, useState } = wp.element;
 const { Fragment } = wp.element;
 const apiFetch = wp.apiFetch;
@@ -15,7 +15,11 @@ function EditComponent({ attributes, setAttributes }) {
 	const [funktionen, setFunktionen] = useState([]);
 	const [loading, setLoading] = useState(true);
 
-	const { displayMode, sparte, funktion } = attributes;
+	const { displayMode, sparte, funktionen: selectedFunktionen, startColor, endColor } = attributes;
+
+	// Standard-Farben aus den Admin-Einstellungen nutzen falls nicht gesetzt
+	const finalStartColor = startColor !== undefined ? startColor : (warBlockData.defaultStartColor || '#667eea');
+	const finalEndColor = endColor !== undefined ? endColor : (warBlockData.defaultEndColor || '#764ba2');
 
 	// Sparten laden
 	useEffect(() => {
@@ -94,8 +98,11 @@ function EditComponent({ attributes, setAttributes }) {
 
 				setFunktionen(options);
 
-				if (funktion && !funcs.has(funktion)) {
-					setAttributes({ funktion: '' });
+				// Filter ungültig gewordene Funktionen
+				const validFuncs = new Set(Array.from(funcs));
+				const updatedSelected = (selectedFunktionen || []).filter(f => validFuncs.has(f));
+				if (updatedSelected.length !== (selectedFunktionen || []).length) {
+					setAttributes({ funktionen: updatedSelected });
 				}
 			} catch (error) {
 				console.error('Fehler beim Laden der Funktionen:', error);
@@ -104,7 +111,15 @@ function EditComponent({ attributes, setAttributes }) {
 		};
 
 		loadFunktionen();
-	}, [sparte, setAttributes, funktion]);
+	}, [sparte, setAttributes, selectedFunktionen]);
+
+	// Handler für Funktionen Veränderung
+	const handleFunktionChange = (funktionValue, isChecked) => {
+		const updated = isChecked
+			? [...(selectedFunktionen || []), funktionValue]
+			: (selectedFunktionen || []).filter(f => f !== funktionValue);
+		setAttributes({ funktionen: updated });
+	};
 
 	return wp.element.createElement(
 		Fragment,
@@ -140,18 +155,68 @@ function EditComponent({ attributes, setAttributes }) {
 						disabled: loading
 					}
 				),
-				(displayMode || 'single') === 'single' && wp.element.createElement(
-					SelectControl,
-					{
-						label: 'Funktion',
-						value: funktion || '',
-						options: [
-							{ label: 'Bitte auswählen...', value: '' },
-							...funktionen
-						],
-						onChange: (value) => setAttributes({ funktion: value }),
-						disabled: !sparte || funktionen.length === 0
-					}
+				(displayMode || 'single') === 'single' && sparte && funktionen.length > 0 && wp.element.createElement(
+					Fragment,
+					null,
+					wp.element.createElement(
+						'p',
+						{ style: { marginBottom: '10px', fontWeight: 'bold' } },
+						'Funktionen auswählen (optional)'
+					),
+					funktionen.map(funktion => 
+						wp.element.createElement(
+							CheckboxControl,
+							{
+								key: funktion.value,
+								label: funktion.label,
+								checked: (selectedFunktionen || []).includes(funktion.value),
+								onChange: (isChecked) => handleFunktionChange(funktion.value, isChecked)
+							}
+						)
+					)
+				),
+				wp.element.createElement(
+					'hr',
+					{ style: { margin: '15px 0' } }
+				),
+				wp.element.createElement(
+					'p',
+					{ style: { marginBottom: '10px', fontWeight: 'bold' } },
+					'Farbverlauf'
+				),
+				wp.element.createElement(
+					Fragment,
+					null,
+					wp.element.createElement(
+						'p',
+						{ style: { marginBottom: '8px', fontSize: '13px', color: '#666' } },
+						'Start-Farbe'
+					),
+					wp.element.createElement(
+						ColorPalette,
+						{
+							value: finalStartColor,
+							onChange: (color) => setAttributes({ startColor: color }),
+							allowCustom: true
+						}
+					)
+				),
+				wp.element.createElement(
+					Fragment,
+					null,
+					wp.element.createElement(
+						'p',
+						{ style: { marginBottom: '8px', fontSize: '13px', color: '#666', marginTop: '15px' } },
+						'End-Farbe'
+					),
+					wp.element.createElement(
+						ColorPalette,
+						{
+							value: finalEndColor,
+							onChange: (color) => setAttributes({ endColor: color }),
+							allowCustom: true
+						}
+					)
 				)
 			)
 		),
@@ -183,11 +248,25 @@ function EditComponent({ attributes, setAttributes }) {
 							wp.element.createElement('strong', null, 'Sparte: '),
 							sparte
 						),
-						(displayMode || 'single') === 'single' && wp.element.createElement(
+						(displayMode || 'single') === 'single' && (selectedFunktionen || []).length > 0 && wp.element.createElement(
 							'p',
 							{ style: { margin: '5px 0', fontSize: '14px' } },
-							wp.element.createElement('strong', null, 'Funktion: '),
-							funktion || '(Alle)'
+							wp.element.createElement('strong', null, 'Funktionen: '),
+							(selectedFunktionen || []).join(', ')
+						),
+						wp.element.createElement(
+							'p',
+							{ style: { margin: '15px 0 5px 0', fontSize: '14px' } },
+							wp.element.createElement('strong', null, 'Farbverlauf: ')
+						),
+						wp.element.createElement(
+							'div',
+							{ style: { 
+								background: 'linear-gradient(135deg, ' + finalStartColor + ' 0%, ' + finalEndColor + ' 100%)',
+								height: '40px',
+								borderRadius: '4px',
+								marginTop: '8px'
+							}}
 						)
 					)
 			)

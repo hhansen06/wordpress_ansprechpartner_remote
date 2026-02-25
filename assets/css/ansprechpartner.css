@@ -4,15 +4,15 @@
 	margin: 2rem 0;
 }
 
-/* Single Card Styling */
-.wp-block-war-ansprechpartner.war-display-single {
+/* Single Card Styling - nur wenn keine Container mit mehreren Karten */
+.wp-block-war-ansprechpartner.war-display-single:not(:has(.war-cards-container)) {
 	display: flex;
 	justify-content: center;
 }
 
-/* Cards Container */
+/* Cards Container - erzwingt Grid-Layout */
 .war-cards-container {
-	display: grid;
+	display: grid !important;
 	grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
 	gap: 2rem;
 	margin: 1.5rem 0;

@@ -9,13 +9,16 @@ if ( ! function_exists( 'war_render_business_card' ) ) {
 	 * Einzelne Visitenkarte rendern
 	 *
 	 * @param array $person Ansprechpartner-Daten
+	 * @param string $startColor Gradient Start-Farbe
+	 * @param string $endColor Gradient End-Farbe
 	 * @return string HTML
 	 */
-	function war_render_business_card( $person ) {
+	function war_render_business_card( $person, $startColor = '#667eea', $endColor = '#764ba2' ) {
 		$html = '<div class="war-card">';
 		
-		// Avatar/Foto Header
-		$html .= '<div class="war-card-header">';
+		// Avatar/Foto Header mit Gradient-Farben
+		$gradient_style = 'style="background: linear-gradient(135deg, ' . esc_attr( $startColor ) . ' 0%, ' . esc_attr( $endColor ) . ' 100%);"';
+		$html .= '<div class="war-card-header" ' . $gradient_style . '>';
 		
 		// Debug: Foto-Struktur als HTML-Kommentar
 		$html .= '<!-- Foto-Daten: ' . esc_html( json_encode( $person['avatar_url'] ?? $person['foto'] ?? 'leer' ) ) . ' -->';
@@ -47,7 +50,8 @@ if ( ! function_exists( 'war_render_business_card' ) ) {
 		// Fallback: Initiale wenn kein Foto
 		if ( ! $have_foto && ! empty( $person['name'] ) ) {
 			$initiale = strtoupper( substr( $person['name'], 0, 1 ) );
-			$html .= '<div class="war-card-avatar war-card-avatar-fallback">';
+			$fallback_style = 'style="background: linear-gradient(135deg, ' . esc_attr( $startColor ) . ' 0%, ' . esc_attr( $endColor ) . ' 100%);"';
+			$html .= '<div class="war-card-avatar war-card-avatar-fallback" ' . $fallback_style . '>';
 			$html .= '<span class="war-avatar-initiale">' . esc_html( $initiale ) . '</span>';
 			$html .= '</div>';
 		}

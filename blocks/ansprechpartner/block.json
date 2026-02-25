@@ -21,9 +21,17 @@
       "type": "string",
       "default": ""
     },
-    "funktion": {
+    "funktionen": {
+      "type": "array",
+      "default": []
+    },
+    "startColor": {
       "type": "string",
-      "default": ""
+      "default": "#667eea"
+    },
+    "endColor": {
+      "type": "string",
+      "default": "#764ba2"
     }
   }
 }
