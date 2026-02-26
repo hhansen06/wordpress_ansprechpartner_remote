@@ -13,7 +13,8 @@
 /* Cards Container - erzwingt Grid-Layout */
 .war-cards-container {
     display: grid !important;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(280px, 280px));
+    justify-content: start;
     gap: 2rem;
     margin: 1.5rem 0;
 }
