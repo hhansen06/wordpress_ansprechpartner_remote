@@ -1,6 +1,6 @@
 const { registerBlockType } = wp.blocks;
 const { useBlockProps, InspectorControls } = wp.blockEditor;
-const { PanelBody, SelectControl, RadioControl, CheckboxControl, ColorPalette, TextControl } = wp.components;
+const { PanelBody, SelectControl, RadioControl, CheckboxControl, TextControl } = wp.components;
 const { useEffect, useState } = wp.element;
 const { Fragment } = wp.element;
 const apiFetch = wp.apiFetch;
@@ -15,7 +15,7 @@ function EditComponent({ attributes, setAttributes }) {
     const [funktionen, setFunktionen] = useState([]);
     const [loading, setLoading] = useState(true);
 
-    const { displayMode, sparte, funktionen: selectedFunktionen, startColor = '#667eea', endColor = '#764ba2', cardLayout = 'grid', overrideEmail = '' } = attributes;
+    const { displayMode, sparte, funktionen: selectedFunktionen, cardLayout = 'grid', overrideEmail = '' } = attributes;
 
     // Sparten laden
     useEffect(() => {
@@ -258,49 +258,6 @@ function EditComponent({ attributes, setAttributes }) {
                 wp.element.createElement(
                     'p',
                     { style: { marginBottom: '10px', fontWeight: 'bold' } },
-                    'Farbverlauf'
-                ),
-                wp.element.createElement(
-                    Fragment,
-                    null,
-                    wp.element.createElement(
-                        'p',
-                        { style: { marginBottom: '8px', fontSize: '13px', color: '#666' } },
-                        'Start-Farbe'
-                    ),
-                    wp.element.createElement(
-                        ColorPalette,
-                        {
-                            value: startColor,
-                            onChange: (color) => setAttributes({ startColor: color }),
-                            allowCustom: true
-                        }
-                    )
-                ),
-                wp.element.createElement(
-                    Fragment,
-                    null,
-                    wp.element.createElement(
-                        'p',
-                        { style: { marginBottom: '8px', fontSize: '13px', color: '#666', marginTop: '15px' } },
-                        'End-Farbe'
-                    ),
-                    wp.element.createElement(
-                        ColorPalette,
-                        {
-                            value: endColor,
-                            onChange: (color) => setAttributes({ endColor: color }),
-                            allowCustom: true
-                        }
-                    )
-                ),
-                wp.element.createElement(
-                    'hr',
-                    { style: { margin: '15px 0' } }
-                ),
-                wp.element.createElement(
-                    'p',
-                    { style: { marginBottom: '10px', fontWeight: 'bold' } },
                     'Layout'
                 ),
                 wp.element.createElement(
@@ -369,22 +326,6 @@ function EditComponent({ attributes, setAttributes }) {
                             { style: { margin: '5px 0', fontSize: '14px' } },
                             wp.element.createElement('strong', null, 'Funktionen: '),
                             (selectedFunktionen || []).join(', ')
-                        ),
-                        wp.element.createElement(
-                            'p',
-                            { style: { margin: '15px 0 5px 0', fontSize: '14px' } },
-                            wp.element.createElement('strong', null, 'Farbverlauf: ')
-                        ),
-                        wp.element.createElement(
-                            'div',
-                            {
-                                style: {
-                                    background: 'linear-gradient(135deg, ' + startColor + ' 0%, ' + endColor + ' 100%)',
-                                    height: '40px',
-                                    borderRadius: '4px',
-                                    marginTop: '8px'
-                                }
-                            }
                         )
                     )
             )

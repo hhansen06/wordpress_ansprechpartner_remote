@@ -14,7 +14,6 @@
 .war-cards-container {
     display: grid !important;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    justify-items: start;
     gap: 2rem;
     margin: 1.5rem 0;
 }
@@ -27,8 +26,6 @@
     overflow: hidden;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
     transition: box-shadow 0.3s ease, transform 0.3s ease;
-    max-width: 400px;
-    margin: 0;
     width: 100%;
 }
 
@@ -37,9 +34,18 @@
     transform: translateY(-2px);
 }
 
+/* Grid Layout - Karten mit max-width */
+.war-layout-grid .war-card {
+    max-width: 280px;
+}
+
+/* Horizontal Layout - volle Breite */
+.war-layout-horizontal .war-card-horizontal {
+    width: 100%;
+}
+
 /* Card Header mit Avatar */
 .war-card-header {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     padding: 1.5rem;
     text-align: center;
     min-height: 150px;
@@ -61,7 +67,6 @@
 
 /* Avatar Fallback (Initialen) */
 .war-card-avatar.war-card-avatar-fallback {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     display: flex;
     align-items: center;
     justify-content: center;

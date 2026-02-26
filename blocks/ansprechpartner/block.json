@@ -28,14 +28,6 @@
             "type": "array",
             "default": []
         },
-        "startColor": {
-            "type": "string",
-            "default": "#667eea"
-        },
-        "endColor": {
-            "type": "string",
-            "default": "#764ba2"
-        },
         "cardLayout": {
             "type": "string",
             "enum": ["grid", "horizontal"],

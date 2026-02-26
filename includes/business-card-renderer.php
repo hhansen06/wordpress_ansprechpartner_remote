@@ -9,24 +9,20 @@ if (!function_exists('war_render_business_card')) {
      * Einzelne Visitenkarte rendern
      *
      * @param array $person Ansprechpartner-Daten
-     * @param string $startColor Gradient Start-Farbe
-     * @param string $endColor Gradient End-Farbe
      * @param string $cardLayout Layout-Typ: 'grid' oder 'horizontal'
      * @param string $overrideEmail Optionale Email-Überschreibung
      * @return string HTML
      */
-    function war_render_business_card($person, $startColor = '#667eea', $endColor = '#764ba2', $cardLayout = 'grid', $overrideEmail = '')
+    function war_render_business_card($person, $cardLayout = 'grid', $overrideEmail = '')
     {
         // Für horizontales Layout ein anderes Template
         if ('horizontal' === $cardLayout) {
-            return war_render_business_card_horizontal($person, $startColor, $endColor, $overrideEmail);
+            return war_render_business_card_horizontal($person, $overrideEmail);
         }
 
         $html = '<div class="war-card">';
 
-        // Avatar/Foto Header mit Gradient-Farben
-        $gradient_style = 'style="background: linear-gradient(135deg, ' . esc_attr($startColor) . ' 0%, ' . esc_attr($endColor) . ' 100%);"';
-        $html .= '<div class="war-card-header" ' . $gradient_style . '>';
+        $html .= '<div class="war-card-header">';
 
         // Debug: Foto-Struktur als HTML-Kommentar
         $html .= '<!-- Foto-Daten: ' . esc_html(json_encode($person['avatar_url'] ?? $person['foto'] ?? 'leer')) . ' -->';
@@ -58,8 +54,7 @@ if (!function_exists('war_render_business_card')) {
         // Fallback: Initiale wenn kein Foto
         if (!$have_foto && !empty($person['name'])) {
             $initiale = strtoupper(substr($person['name'], 0, 1));
-            $fallback_style = 'style="background: linear-gradient(135deg, ' . esc_attr($startColor) . ' 0%, ' . esc_attr($endColor) . ' 100%);"';
-            $html .= '<div class="war-card-avatar war-card-avatar-fallback" ' . $fallback_style . '>';
+            $html .= '<div class="war-card-avatar war-card-avatar-fallback">';
             $html .= '<span class="war-avatar-initiale">' . esc_html($initiale) . '</span>';
             $html .= '</div>';
         }
@@ -92,7 +87,6 @@ if (!function_exists('war_render_business_card')) {
         $displayEmail = !empty($overrideEmail) ? $overrideEmail : ($person['email'] ?? '');
         if (!empty($displayEmail)) {
             $html .= '<div class="war-contact-item">';
-            $html .= '<span class="war-contact-icon">📧</span> ';
             $html .= '<a href="mailto:' . esc_attr($displayEmail) . '">' . esc_html($displayEmail) . '</a>';
             $html .= '</div>';
         }
@@ -101,7 +95,6 @@ if (!function_exists('war_render_business_card')) {
         $phone = $person['telefon'] ?? $person['phone'] ?? '';
         if (!empty($phone)) {
             $html .= '<div class="war-contact-item">';
-            $html .= '<span class="war-contact-icon">☎️</span> ';
             $html .= '<a href="tel:' . esc_attr(preg_replace('/[^0-9+]/', '', $phone)) . '">' . esc_html($phone) . '</a>';
             $html .= '</div>';
         }
@@ -110,7 +103,6 @@ if (!function_exists('war_render_business_card')) {
         $mobil = $person['mobil'] ?? $person['mobile'] ?? '';
         if (!empty($mobil)) {
             $html .= '<div class="war-contact-item">';
-            $html .= '<span class="war-contact-icon">📱</span> ';
             $html .= '<a href="tel:' . esc_attr(preg_replace('/[^0-9+]/', '', $mobil)) . '">' . esc_html($mobil) . '</a>';
             $html .= '</div>';
         }
@@ -129,18 +121,14 @@ if (!function_exists('war_render_business_card_horizontal')) {
      * Horizontale Visitenkarte rendern (schmale Variante)
      *
      * @param array $person Ansprechpartner-Daten
-     * @param string $startColor Gradient Start-Farbe
-     * @param string $endColor Gradient End-Farbe
      * @param string $overrideEmail Optionale Email-Überschreibung
      * @return string HTML
      */
-    function war_render_business_card_horizontal($person, $startColor = '#667eea', $endColor = '#764ba2', $overrideEmail = '')
+    function war_render_business_card_horizontal($person, $overrideEmail = '')
     {
         $html = '<div class="war-card-horizontal">';
 
-        // Avatar/Foto Header mit Gradient-Farben (links)
-        $gradient_style = 'style="background: linear-gradient(135deg, ' . esc_attr($startColor) . ' 0%, ' . esc_attr($endColor) . ' 100%);"';
-        $html .= '<div class="war-card-horizontal-left" ' . $gradient_style . '>';
+        $html .= '<div class="war-card-horizontal-left">';
 
         // Avatar - Foto oder Fallback
         $have_foto = false;
@@ -202,7 +190,6 @@ if (!function_exists('war_render_business_card_horizontal')) {
         $displayEmail = !empty($overrideEmail) ? $overrideEmail : ($person['email'] ?? '');
         if (!empty($displayEmail)) {
             $html .= '<div class="war-contact-item">';
-            $html .= '<span class="war-contact-icon">📧</span> ';
             $html .= '<a href="mailto:' . esc_attr($displayEmail) . '">' . esc_html($displayEmail) . '</a>';
             $html .= '</div>';
         }
